@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-cpu
+spec:
+  containers:
+  - name: container-cpu-server
+    imagePullPolicy: Always
+    image: tdolby/experimental:container-cpu-12.0.2.0-alpine
+  restartPolicy: Never
