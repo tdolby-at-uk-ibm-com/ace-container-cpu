@@ -1,18 +1,23 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: container-cpu
+  name: container-cpu-100
   labels:
-    app: container-cpu
+    app: container-cpu-100
   annotations:
     productName: "IBM App Connect Enterprise for non-production"
     productID: eb5b5e73f62b4dcf8c434c6274a158a7
     productMetric: FREE
 spec:
   containers:
-  - name: container-cpu
+  - name: container-cpu-100
     imagePullPolicy: Always
     image: tdolby/experimental:container-cpu-12.0.2.0-alpine
+    resources:
+      limits:
+        cpu: "1"
+      requests:
+        cpu: "1"
     env:
     - name: LICENSE
       value: "accept"
@@ -21,14 +26,94 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: container-cpu-service
+  name: container-cpu-100-service
 spec:
   ports:
     - protocol: TCP
       port: 7800
       targetPort: 7800
   selector:
-    app: container-cpu
+    app: container-cpu-100
+  type: NodePort
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-cpu-30
+  labels:
+    app: container-cpu-30
+  annotations:
+    productName: "IBM App Connect Enterprise for non-production"
+    productID: eb5b5e73f62b4dcf8c434c6274a158a7
+    productMetric: FREE
+spec:
+  containers:
+  - name: container-cpu-30
+    imagePullPolicy: Always
+    image: tdolby/experimental:container-cpu-12.0.2.0-alpine
+    resources:
+      limits:
+        cpu: "300m"
+      requests:
+        cpu: "300m"
+    env:
+    - name: LICENSE
+      value: "accept"
+  restartPolicy: Never
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: container-cpu-30-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 7800
+      targetPort: 7800
+  selector:
+    app: container-cpu-30
+  type: NodePort
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-cpu-10
+  labels:
+    app: container-cpu-10
+  annotations:
+    productName: "IBM App Connect Enterprise for non-production"
+    productID: eb5b5e73f62b4dcf8c434c6274a158a7
+    productMetric: FREE
+spec:
+  containers:
+  - name: container-cpu-10
+    imagePullPolicy: Always
+    image: tdolby/experimental:container-cpu-12.0.2.0-alpine
+    resources:
+      limits:
+        cpu: "100m"
+      requests:
+        cpu: "100m"
+    env:
+    - name: LICENSE
+      value: "accept"
+  restartPolicy: Never
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: container-cpu-10-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 7800
+      targetPort: 7800
+  selector:
+    app: container-cpu-10
   type: NodePort
   sessionAffinity: None
   externalTrafficPolicy: Cluster

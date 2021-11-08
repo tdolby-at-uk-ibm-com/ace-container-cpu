@@ -1,13 +1,43 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: container-cpu-route
+  name: container-cpu-100-route
   namespace: default
 spec:
-  host: container-cpu-default.apps.aster-openshift.dolbyfamily.org
+  host: container-cpu-100-default.apps.aster-openshift.dolbyfamily.org
   to:
     kind: Service
-    name: container-cpu-service
+    name: container-cpu-100-service
+    weight: 100
+  port:
+    targetPort: 7800
+  wildcardPolicy: None
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: container-cpu-30-route
+  namespace: default
+spec:
+  host: container-cpu-30-default.apps.aster-openshift.dolbyfamily.org
+  to:
+    kind: Service
+    name: container-cpu-30-service
+    weight: 100
+  port:
+    targetPort: 7800
+  wildcardPolicy: None
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: container-cpu-10-route
+  namespace: default
+spec:
+  host: container-cpu-10-default.apps.aster-openshift.dolbyfamily.org
+  to:
+    kind: Service
+    name: container-cpu-10-service
     weight: 100
   port:
     targetPort: 7800
