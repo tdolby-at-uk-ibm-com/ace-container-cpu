@@ -1,0 +1,24 @@
+
+
+CREATE COMPUTE MODULE CPUBurnFlow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		DECLARE iterations INTEGER 5000;
+		IF InputLocalEnvironment.HTTP.Input.QueryString.iterations IS NOT NULL THEN
+			SET iterations = CAST(InputLocalEnvironment.HTTP.Input.QueryString.iterations AS INTEGER);
+		END IF;
+		
+		DECLARE I INTEGER 0;
+		WHILE I < iterations DO
+			SET OutputLocalEnvironment.a.b.c.d.e = 'dummy';
+			SET OutputLocalEnvironment.a.b.c.d.e = NULL;
+			SET I = I + 1;
+		END WHILE;
+		
+		SET OutputRoot.JSON.Data.result = 'success';
+		SET OutputRoot.JSON.Data.iterations = iterations;
+		RETURN TRUE;
+	END;
+END MODULE;
