@@ -2,12 +2,33 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: container-cpu
+  labels:
+    app: container-cpu
+  annotations:
+    productName: "IBM App Connect Enterprise for non-production"
+    productID: eb5b5e73f62b4dcf8c434c6274a158a7
+    productMetric: FREE
 spec:
   containers:
-  - name: container-cpu-server
+  - name: container-cpu
     imagePullPolicy: Always
     image: tdolby/experimental:container-cpu-12.0.2.0-alpine
     env:
     - name: LICENSE
       value: "accept"
   restartPolicy: Never
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: container-cpu-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 7800
+      targetPort: 7800
+  selector:
+    app: container-cpu
+  type: NodePort
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
