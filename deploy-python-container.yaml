@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-cpu-python-for-testing
+  labels:
+    app: container-cpu-python-for-testing
+spec:
+  containers:
+  - name: container-cpu-python-for-testing
+    imagePullPolicy: Always
+    image: python:3.9-slim
+    command: ["sleep"]
+    args: ["100000000"]
+  restartPolicy: Never
