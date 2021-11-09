@@ -23,4 +23,4 @@ for reqNumber in range(args.requests):
     print('{0} Status code {1} time {2}'.format(((int)((before_time-start_time)/1000000)), r.status_code, (after_time - before_time)))
 
 end_time = time.time_ns()
-print('100 requests in {0}ms avg {1}ms'.format((int)((end_time - start_time)/1000000), ((int)((end_time - start_time)/(args.requests * 1000000)))))
+print('{0} requests in {1}ms avg {2}ms'.format(args.requests, (int)((end_time - start_time)/1000000), ((int)((end_time - start_time)/(args.requests * 1000000)))))

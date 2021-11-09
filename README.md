@@ -14,11 +14,11 @@ messages are delayed while others proceed at full speed.
 ## Demonstration flow and application
 
 This repo contains an ACE application, a Dockerfile, and a Python script that
-can be used to illustrate how CPU throttling works. The ACE application is
-designed to burn CPU in a loop to simulate CPU-intensive activity in a flow, and
-the Python script measures the amount of time taken by multiple requests. The
-Dockerfile is used to create a container image that can be used to show the
-results locally.
+can be used to illustrate how CPU throttling works; this repo can be cloned via
+git in the v11/v12 toolkit. The ACE application is designed to burn CPU in a
+loop to simulate CPU-intensive activity in a flow, and the Python script
+measures the amount of time taken by multiple requests. The Dockerfile is used
+to create a container image that can be used to show the results locally.
 
 ![Flow picture](pictures/cpu-burn-application.png)
 
@@ -103,6 +103,23 @@ but now the gaps are larger and more frequent:
 
 showing that the requests are being throttled.
 
+## Effects
+
+The CPU throttling applies regardless of how many threads are active in
+the process, and switching on trace causes a lot of CPU activity; this can
+lead to gaps in traces that might (at first glance) make it look like a
+particular method is really slow, when in reality the container simply
+hit the CPU limit and was delayed.
+
+Attempting to work around the throttling by adding more containers is also
+unlikely to provide the desired results: ten containers (scaled via Knative
+or other means) running with 0.1 CPUs would not provide the equivalent of
+1 container with 1 CPU, at least not in terms of latency. The ten containers
+might all be scheduled at the same time, with the consequent 90ms gaps
+aligned so that no traffic is flowing through the system. This could be hard
+to track down in a real-world scenario, but would be visible in latency
+measurements if such were available.
+
 ## Docker and Kubernetes
 
 The results above used docker with the "--cpus" option, but the same effects
@@ -133,4 +150,9 @@ be used to test the performance,
 http-timing.py --url "http://localhost:7800/cpuBurnFlow" --iterations 5000
 ```
 
-and the results validated.
+and the results validated. Tuning the iterations changes the loop in the flow
+and is therefore useful for creating tests that use a certain number of
+milliseconds of CPU; this is helpful when moving between systems with different
+CPU speeds, etc.
+
+See the kubernetes directory for information on running in an actual cluster.
